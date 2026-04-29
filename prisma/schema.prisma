@@ -8,10 +8,42 @@ datasource db {
 }
 
 model Servicios {
-  id            Int      @id @default(autoincrement())
-  titulo        String
+  id            Int            @id @default(autoincrement())
+  nombre        String         @map("titulo")
   descripcion   String?
+  categoria     String?
+  precioBase    Float?
+  duracionMin   Int?
+  activo        Boolean        @default(true)
   imagenUrl     String?
-  creadaEn      DateTime @default(now())
-  actualizadaEn DateTime @updatedAt
+  creadaEn      DateTime       @default(now())
+  actualizadaEn DateTime       @updatedAt
+
+  cotizaciones  Cotizaciones[]
+}
+
+model Cliente {
+  id            Int            @id @default(autoincrement())
+  nombre        String
+  telefono      String?
+  email         String?
+  direccion     String?
+  notas         String?
+  creadoEn      DateTime       @default(now())
+
+  cotizaciones  Cotizaciones[]
+}
+
+model Cotizaciones {
+  id                Int        @id @default(autoincrement())
+  clienteId         Int
+  servicioId        Int
+  fechaCotizacion   DateTime   @default(now())
+  fechaProgramada   DateTime?
+  estado            String     @default("pendiente")
+  direccionServicio String?
+  comentarios       String?
+
+  cliente           Cliente    @relation(fields: [clienteId], references: [id], onDelete: Cascade)
+  servicio          Servicios  @relation(fields: [servicioId], references: [id], onDelete: Cascade)
 }

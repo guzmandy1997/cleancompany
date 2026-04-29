@@ -8,72 +8,75 @@ export default async function ServiciosPage() {
   });
 
   return (
-    <main style={{ padding: "24px", maxWidth: "900px", margin: "0 auto" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "24px",
-        }}
-      >
-        <h1>Servicios</h1>
-
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Servicios</h1>
         <Link
           href="/servicios/nuevo"
-          style={{
-            padding: "10px 14px",
-            border: "1px solid #ccc",
-            textDecoration: "none",
-            borderRadius: "8px",
-          }}
+          className="bg-slate-800 text-white px-4 py-2 rounded-lg hover:bg-slate-700 transition"
         >
-          Nuevo servicio
+          + Nuevo servicio
         </Link>
       </div>
 
       {servicios.length === 0 ? (
-        <p>No hay servicios registrados todavía.</p>
+        <p className="text-gray-500">No hay servicios registrados todavía.</p>
       ) : (
-        <div style={{ display: "grid", gap: "16px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {servicios.map((servicio) => (
-            <article
+            <div
               key={servicio.id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "10px",
-                padding: "16px",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
+              className="bg-white rounded-lg p-6 shadow hover:shadow-md transition"
             >
-              <div>
-                <h2 style={{ marginBottom: "8px" }}>{servicio.titulo}</h2>
-                {servicio.descripcion && (
-                  <p style={{ marginBottom: "8px" }}>{servicio.descripcion}</p>
+              <div className="flex justify-between items-start mb-3">
+                <h2 className="text-lg font-semibold text-slate-800">
+                  {servicio.nombre}
+                </h2>
+                <span
+                  className={`px-2 py-1 rounded text-xs font-medium ${
+                    servicio.activo
+                      ? "bg-green-100 text-green-700"
+                      : "bg-red-100 text-red-700"
+                  }`}
+                >
+                  {servicio.activo ? "Activo" : "Inactivo"}
+                </span>
+              </div>
+
+              <p className="text-sm text-gray-500 mb-2">{servicio.categoria}</p>
+
+              {servicio.descripcion && (
+                <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                  {servicio.descripcion}
+                </p>
+              )}
+
+              <div className="flex gap-4 mb-4">
+                {servicio.precioBase && (
+                  <p className="text-sm text-gray-600">
+                    Precio: <span className="font-semibold">${servicio.precioBase}</span>
+                  </p>
                 )}
-                {servicio.imagenUrl && (
-                  <p style={{ fontSize: "14px", color: "#666" }}>
-                    Imagen: {servicio.imagenUrl}
+                {servicio.duracionMin && (
+                  <p className="text-sm text-gray-600">
+                    Duración: <span className="font-semibold">{servicio.duracionMin} min</span>
                   </p>
                 )}
               </div>
 
-              <div style={{ display: "flex", gap: "8px" }}>
+              {servicio.imagenUrl && (
+                <p className="text-xs text-gray-400 mb-3 truncate">
+                  Imagen: {servicio.imagenUrl}
+                </p>
+              )}
+
+              <div className="flex gap-2">
                 <Link
                   href={`/servicios/${servicio.id}/editar`}
-                  style={{
-                    padding: "8px 12px",
-                    backgroundColor: "#0070f3",
-                    color: "white",
-                    borderRadius: "6px",
-                    textDecoration: "none",
-                  }}
+                  className="flex-1 bg-slate-800 text-white px-4 py-2 rounded-lg text-center text-sm hover:bg-slate-700 transition"
                 >
                   Editar
                 </Link>
-
                 <form
                   action={async () => {
                     "use server";
@@ -82,23 +85,16 @@ export default async function ServiciosPage() {
                 >
                   <button
                     type="submit"
-                    style={{
-                      padding: "8px 12px",
-                      cursor: "pointer",
-                      backgroundColor: "#ff4444",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "6px",
-                    }}
+                    className="flex-1 bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition"
                   >
                     Eliminar
                   </button>
                 </form>
               </div>
-            </article>
+            </div>
           ))}
         </div>
       )}
-    </main>
+    </div>
   );
 }
