@@ -1,4 +1,3 @@
-export const dynamic = "force-dynamic";
 import { crearCliente } from "../actions";
 
 export default function NuevoClientePage() {
