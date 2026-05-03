@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { crearServicio } from "../actions";
 
 export default function NuevoServicioPage() {
